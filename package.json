@@ -1,0 +1,28 @@
+{
+  "name": "poopin-api",
+  "version": "1.0.0",
+  "description": "an application for poop lovers",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luisfidelis/poopin-api.git"
+  },
+  "keywords": [
+    "poop",
+    "app",
+    "react",
+    "node"
+  ],
+  "author": "L3 projects",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luisfidelis/poopin-api/issues"
+  },
+  "homepage": "https://github.com/luisfidelis/poopin-api#readme",
+  "dependencies": {
+    "hapi": "^16.4.3"
+  }
+}
