@@ -2,7 +2,7 @@
   "name": "poopin-api",
   "version": "1.0.0",
   "description": "an application for poop lovers",
-  "main": "server.js",
+  "main": "scripts/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
