@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/luisfidelis/poopin-api#readme",
   "dependencies": {
-    "hapi": "^16.4.3"
+    "hapi": "^16.4.3",
+    "hapi-mongodb": "^6.2.1"
   }
 }
