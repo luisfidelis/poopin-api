@@ -5,7 +5,7 @@ const Hapi = require('hapi');
 const server = new Hapi.Server();
 
 const dbOpts = {
-    url: 'mongodb://localhost:27017/poopin',
+    url: 'mongodb://127.0.0.1:27017/poopin',
     settings: {
         poolSize: 10
     },
@@ -32,15 +32,16 @@ server.register({
     server.route( {
         method: 'POST',
         path: '/user/save',
-        handler(request, reply) {
+        handler: function handler(request, reply) {
             const db = request.mongo.db;
             const ObjectID = request.mongo.ObjectID;
-            var userId    = request.params.id;
-            var userName  = request.params.name;
-            var userNickname  = request.params.nickname;
-            var userBirthDate = request.params.birthDate;
-            var userMail     = request.params.email;
-            var userPassword  = request.params.password; 
+            var params = request.payload;
+            var userId    = params.id;
+            var userName  = params.name;
+            var userNickname  = params.nickname;
+            var userBirthDate = params.birthDate;
+            var userMail     = params.email;
+            var userPassword  = params.password; 
             if(userId){
 	            db.collection('users').findOne({_id: new ObjectID(request.params.id) }, function (err, result) {
 	                if (err) {
