@@ -2,7 +2,7 @@
 
 const Hapi = require('hapi');
 
-const server = new Hapi.Server(+process.env.PORT || 3000, '0.0.0.0');
+const server = new Hapi.Server();
 
 const dbOpts = {
     url: 'mongodb://poopin:l3projects@ds127443.mlab.com:27443/poopin',
@@ -26,8 +26,8 @@ server.register({
     }
 
     server.connection({
-        port : 3000,
-  		host: 'poopin-api.herokuapp.com' 
+        port : process.env.PORT ||3000 ,
+  		host: '0.0.0.0' 
 	});
 
     server.route([{
