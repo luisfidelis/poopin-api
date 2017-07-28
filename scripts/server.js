@@ -2,7 +2,7 @@
 
 const Hapi = require('hapi');
 
-const server = new Hapi.Server(~~process.env.PORT || 3000, '0.0.0.0');
+const server = new Hapi.Server(3000, '0.0.0.0');
 
 const dbOpts = {
     url: 'mongodb://poopin:l3projects@ds127443.mlab.com:27443/poopin',
