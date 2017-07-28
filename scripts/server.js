@@ -26,6 +26,7 @@ server.register({
     }
 
     server.connection({
+        port : 3000,
   		host: 'poopin-api.herokuapp.com' 
 	});
 
