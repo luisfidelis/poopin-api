@@ -5,7 +5,7 @@ const Hapi = require('hapi');
 const server = new Hapi.Server();
 
 const dbOpts = {
-    url: 'mongodb://127.0.0.1:27017/poopin',
+    url: 'mongodb://l3projects:l3projects@ds127443.mlab.com:27443/poopin',
     settings: {
         poolSize: 10
     },
