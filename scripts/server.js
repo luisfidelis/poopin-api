@@ -26,7 +26,7 @@ server.register({
     }
 
     server.connection({
-  		host: 'https://poopin-api.herokuapp.com' 
+  		host: 'poopin-api.herokuapp.com' 
 	});
 
     server.route([{
