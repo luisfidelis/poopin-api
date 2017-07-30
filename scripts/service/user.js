@@ -48,32 +48,32 @@ function save(request,reply) {
 				        return reply.response(response);
 					}else{
 						db.collection('users').insertOne({
-				    	name      : userName,
-				    	nickname  : userNickname,
-				    	birthDate : userBirthDate,
-				    	email     : userMail,
-				    	password  : hash 
-				    }, function(err, result){
-				    	if(err){
-				    		response.error = true;
-				            response.message = "Falha ao salvar usuário";
-				            return reply.response(response);
-				    	}
-				    	db.collection('users').findOne({email: userMail}, function (err, result) {
-				            if (err) {
-				                response.error = true;
-				                response.message = "Falha ao retornar ID do usuário";
-				                return reply.response(response);
-				            }
-				            if(result){
-				            	var user = result;
-				            	response.data.push({
-				            		"id" : user._id
-				            	});
-				            	return reply.response(response);
-				            }
-				   		});
-				    });
+					    	name      : userName,
+					    	nickname  : userNickname,
+					    	birthDate : userBirthDate,
+					    	email     : userMail,
+					    	password  : hash 
+					    }, function(err, result){
+					    	if(err){
+					    		response.error = true;
+					            response.message = "Falha ao salvar usuário";
+					            return reply.response(response);
+					    	}
+					    	db.collection('users').findOne({email: userMail}, function (err, result) {
+					            if (err) {
+					                response.error = true;
+					                response.message = "Falha ao retornar ID do usuário";
+					                return reply.response(response);
+					            }
+					            if(result){
+					            	var user = result;
+					            	response.data.push({
+					            		"id" : user._id
+					            	});
+					            	return reply.response(response);
+					            }
+					   		});
+					    });
 					}
 					
 				});
