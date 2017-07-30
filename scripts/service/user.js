@@ -17,7 +17,7 @@ function save(request,reply) {
 		"data":[]
 	}
 	if(userId){
-	    db.collection('users').findOne({_id: new ObjectID(request.params.id) }, function (err, result) {
+	    db.collection('users').findOne({_id: new ObjectID(userId) }, function (err, result) {
 	        if (err) {
 	            response.error = true;
 	            response.message = "Falha ao salvar usuário";
