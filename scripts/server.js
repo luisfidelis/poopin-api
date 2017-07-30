@@ -19,7 +19,8 @@ const dbOpts = {
 
 // --- Services
 
-var UserService = require("./service/user.js");
+var UserService   = require("./service/user.js");
+var ToiletService = require("./service/toilet.js");
 
 
 server.register({
@@ -34,7 +35,7 @@ server.register({
     server.connection({
         port : process.env.PORT ||3000 ,
   		host: '0.0.0.0'
-	    // host:'localhost'
+	    //host:'localhost'
     });
 
     server.route([{
@@ -45,6 +46,14 @@ server.register({
     	method: 'POST',
         path: '/user/login',
         handler: UserService.login
+    },{
+        method: 'POST',
+        path: '/toilet/save',
+        handler: ToiletService.save 
+    },{
+        method: 'GET',
+        path: '/toilet/getAll',
+        handler: ToiletService.getAll 
     }]);
 
     server.start(function() {
