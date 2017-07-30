@@ -17,6 +17,7 @@ function save(request,reply) {
 		"data":[]
 	}
 	if(userId){
+		var _id = new ObjectID(userId);
 	    db.collection('users').findOne({_id: new ObjectID(userId) }, function (err, result) {
 	        if (err) {
 	            response.error = true;
@@ -24,7 +25,7 @@ function save(request,reply) {
 	            return reply.response(response);
 	        }
 	        if(result){
-	        	response.message("Em construção");
+	        	response.message = "Em construção";
 	        	return reply.response(response);
 	        }
 	    });
@@ -96,7 +97,7 @@ function login(request, reply){
     db.collection('users').findOne({email: userMail}, function (err, result) {
         if (err) {
             response.error = true;
-            response.message = "fail";
+            response.message = "Falhar ao realizar login";
             return reply.response(response);
         }
         if(result){
@@ -104,7 +105,7 @@ function login(request, reply){
         	bcrypt.compare(userPassword, user.password, function(err, result){
         		if(err || !result){
         			response.error = true;
-        			response.message = "Incorrect email or password";
+        			response.message = "E-mail ou senha incorretos";
         			return reply.response(response);
         		}else{
         			response.data.push({
@@ -119,7 +120,7 @@ function login(request, reply){
         	});
         }else{
         	response.error = true;
-        	response.message = "Incorrect email or password";
+        	response.message = "E-mail ou senha incorretos";
         	return reply.response(response);
         }
     });
