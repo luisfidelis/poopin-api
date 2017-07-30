@@ -108,6 +108,7 @@ function login(request, reply){
         			return reply.response(response);
         		}else{
         			response.data.push({
+        				"id"        : user._id,
         				"email" 	: user.email,
         				"name" 		: user.name,
         				"nickname"  : user.nickname,
