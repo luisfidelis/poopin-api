@@ -8,37 +8,37 @@ API
 
   	Parameters
   	```
-   	{ 
-   		name       : string,
+   { 
+   	name       : string,
 		nickname   : string,
 		birthDate  : string || dd/mm/yyyy,
 		email      : atring,
 		password   : string 
-   	}
+   }
   	``` 
   	Response
   	```
-   	{ 
-   		error    : bool,
+   { 
+   	error    : bool,
 		message  : string,
 		data     : [{
 			_id  : string
 		}]
-   	}
+   }
   	``` 	
 * POST /user/login
 
   	Parameters
   	```
-   	{ 
-   		email      : string,
+   { 
+   	email      : string,
 		password   : string 
-   	}
+   }
   	``` 
   	Response
   	```
-   	{ 
-   		error    : bool,
+   { 
+   	error    : bool,
 		message  : string,
 		data     : [{
 			_id  	   : string,
@@ -47,62 +47,62 @@ API
 			birthDate  : string || dd/mm/yyyy,
 			email      : atring
 		}]
-   	}
+   }
    	```
 * GET /toilet/getAll
 
   	Response
   	```
-   	{ 
-   		error    : bool,
+   { 
+   	error    : bool,
 		message  : string,
 		data     : [{
-			_id			: string,
-            description : string,
-            address 	: string,
-            city		: string,
-            state		: string,
-            country		: string,
-            lat			: string,
-            lng			: string,
-            avaliations: [
-                {
-                    _id		    : string,
-                    toiletId    : string,
-                    userId      : string,
-                    stars	    : integer,
-                    observation : string
-                }
-            ]
+			_id	    : string,
+			description : string,
+			address     : string,
+			city	    : string,
+			state	    : string,
+			country	    : string,
+			lat	    : string,
+			lng	    : string,
+			avaliations: [
+				{
+				    _id		: string,
+				    toiletId	: string,
+				    userId      : string,
+				    stars	: integer,
+				    observation : string
+				}
+			]
 		}]
-   	}
+   }
   	```   	 	
 * POST /toilet/save
 
   	Parameters
   	```
-   	{ 
-   		description : string,
+   { 
+   	description : string,
 		address     : string,
 		city        : string,
 		state       : string,
 		country     : string,
-	    lat         : string,
-	    lng         : string,
-	    userId      : string,
-	    avaliations : [{
-	    	stars       : integer,
-            observation : string
+	    	lat         : string,
+	    	lng         : string,
+	    	userId      : string,
+	    	avaliations : [{
+	    		stars       : integer,
+            		observation : string
 		}] 
-   	}
+   }
   	``` 
   	Response
   	```
-   	{ 
-   		error    : bool,
+   { 
+   	error    : bool,
 		message  : string,
 		data     : []
-   	}
+   }
   	``` 	
 	
 
