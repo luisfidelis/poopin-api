@@ -26,6 +26,7 @@
     "async": "^2.5.0",
     "bcrypt": "^1.0.2",
     "hapi": "^16.4.3",
-    "hapi-mongodb": "^6.2.1"
+    "hapi-mongodb": "^6.2.1",
+    "nodemailer": "^4.0.1"
   }
 }

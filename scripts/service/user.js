@@ -1,4 +1,19 @@
-var bcrypt = require('bcrypt');
+'use strict';
+
+var bcrypt 	   = require('bcrypt');
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // secure:true for port 465, secure:false for port 587
+    auth: {
+        user: 'l3projectsweb@gmail.com',
+        pass: 'poopinweed'
+    }
+});
+
+
 const saltRounds = 10;
 
 function save(request,reply) {
@@ -9,6 +24,8 @@ function save(request,reply) {
 	var userName      = params.name;
 	var userNickname  = params.nickname;
 	var userBirthDate = params.birthDate;
+	
+
 	var userMail      = params.email;
 	var userPassword  = params.password; 
 	var response = {
@@ -66,6 +83,27 @@ function save(request,reply) {
 					                return reply.response(response);
 					            }
 					            if(result){
+					            	// setup email data with unicode symbols
+						           	var message = 'Parabéns por se tornar um novo cagão na plataforma Poopin, '+userName;
+						           	if(userNickname){
+						           		message +=', ou melhor, '+userNickname;
+						           	}
+						           	message += '.';
+									var mailOptions = {
+									    from    : '"L3Projects👻" <l3projectsweb@gmail.com>', // sender address
+									    to 		: userMail, // list of receivers
+									    subject : 'Novo cagão', // Subject line
+									    text    : message, // plain text body
+									    html    : '<h1>'+message+'</h1>' // html body
+									};
+
+									// send mail with defined transport object
+									transporter.sendMail(mailOptions, (error, info) => {
+									    if (error) {
+									        return console.log(error);
+									    }
+									    console.log('Message %s sent: %s', info.messageId, info.response);
+									});
 					            	var user = result;
 					            	response.data.push({
 					            		"id" : user._id
