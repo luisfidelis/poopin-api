@@ -1,7 +1,9 @@
-var smtpConfig = require('../../config/smtp.js');
+var smtpConfig     = require('../../config/smtp.js');
+var geocoderConfig = require('../../config/geocoder.js');
 
 module.exports = {
-	smtpConfig : smtpConfig
+	smtpConfig 	   : smtpConfig,
+	geocoderConfig : geocoderConfig
 };
 
 

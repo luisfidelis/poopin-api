@@ -8,6 +8,7 @@ function save(request,reply) {
 	
     var toilet = {
         description : params.description,
+        title       : params.title,
         address     : params.address,
         city        : params.city,
         state       : params.state,

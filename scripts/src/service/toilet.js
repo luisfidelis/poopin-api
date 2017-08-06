@@ -1,5 +1,11 @@
 const async = require('async');
 
+var Utilities   = require('../util/util.js');
+
+var NodeGeocoder = require('node-geocoder');
+
+var geocoder = NodeGeocoder(Utilities.geocoderConfig);
+ 
 function save(toilet,avaliations,mongo) {
 	const db       = mongo.db;
 	const ObjectID = mongo.ObjectID;
@@ -12,6 +18,7 @@ function save(toilet,avaliations,mongo) {
     var userIdObj = new ObjectID(userId);             
     toilet.userId = userIdObj;
 
+      
     var response = {
 		"error" : false,
 		"message": "ok",
@@ -19,28 +26,38 @@ function save(toilet,avaliations,mongo) {
 	};
 
     return new Promise(function(resolve,reject){
-        db.collection('toilet').insertOne(toilet, function(err, result){
-        	if(err){
-        		response.error   = true;
+        var geocoderAddress = toilet.address+', '+toilet.city+', '+toilet.state+', '+toilet.country;
+        geocoder.geocode(geocoderAddress, function(err, res) {
+            if(err){
+                response.error   = true;
                 response.message = "Falha ao salvar cagada";
                 resolve(response);
-        	}
-            if(avaliations && avaliations.length > 0){
-        		avaliations.map(function(avaliation){
-        			avaliation.userId   = userIdObj;
-        			avaliation.toiletId = toiletIdObj; 
-        		});
-        		db.collection('avaliation').insertMany(avaliations,function(err,result){
-        			if(err){
-        				response.error   = true;
-        				response.message = "Falha ao salvar a avaliação da sua cagada";
-        				resolve(response);
-        			}
-        		});
-        	}
-        	response.message = "Cagada salva com sucesso";
-        	resolve(response);
-        });
+            }else{
+                var location = res[0];
+                var lat = location.latitude;
+                var lng = location.longitude;
+                toilet.lat = lat;
+                toilet.lng = lng;
+                db.collection('toilet').insertOne(toilet, function(err, result){
+                    if(avaliations && avaliations.length > 0){
+                        avaliations.map(function(avaliation){
+                            avaliation.userId   = userIdObj;
+                            avaliation.toiletId = toiletIdObj; 
+                        });
+                        db.collection('avaliation').insertMany(avaliations,function(err,result){
+                            if(err){
+                                response.error   = true;
+                                response.message = "Falha ao salvar a avaliação da sua cagada";
+                                resolve(response);
+                            }
+                        });
+                    }
+                    response.message = "Cagada salva com sucesso";
+                    resolve(response);
+                });
+            }
+        });  
+        
     });
 };
 
