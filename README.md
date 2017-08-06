@@ -4,11 +4,13 @@
 
 API
 ---------------------------------------------
-* POST /user/save
+* User /user
+* POST /save
 
   	Parameters
   	```
    { 
+   	id         : string,
    	name       : string,
 		nickname   : string,
 		birthDate  : string || dd/mm/yyyy,
@@ -26,6 +28,7 @@ API
 		}]
    }
   	``` 	
+   Case id <> null, the profile data of the user will be updated
 * POST /user/login
 
   	Parameters
@@ -49,7 +52,8 @@ API
 		}]
    }
    	```
-* GET /toilet/getAll
+* Toilet /toilet/
+* GET /getAll
 
   	Response
   	```
@@ -77,7 +81,7 @@ API
 		}]
    }
   	```   	 	
-* POST /toilet/save
+* POST /save
 
   	Parameters
   	```
@@ -106,5 +110,35 @@ API
   	``` 	
 	
 
+* Avaliation /avaliation/
+* GET /user/{userId}
+
+  	Response
+  	```
+   { 
+   	error    : bool,
+		message  : string,
+		data     : []
+   }
+  	``` 
+	
+* POST /save
+Parameters
+  	```
+   { 
+   	userId      : string,
+	toiletId    : string,
+	stars       : string,
+	observation : string
+   }
+  	``` 
+  	Response
+  	```
+   { 
+   	error    : bool,
+		message  : string,
+		data     : []
+   }
+  	``` 	
 
 
