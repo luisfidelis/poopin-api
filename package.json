@@ -2,7 +2,7 @@
   "name": "poopin-api",
   "version": "1.0.0",
   "description": "an application for poop lovers",
-  "main": "scripts/server.js",
+  "main": "scripts/api/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,6 +27,7 @@
     "bcrypt": "^1.0.2",
     "hapi": "^16.4.3",
     "hapi-mongodb": "^6.2.1",
+    "hapi-router": "^3.5.0",
     "nodemailer": "^4.0.1"
   }
 }
