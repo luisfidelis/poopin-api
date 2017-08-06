@@ -21,15 +21,28 @@ function save(user,mongo) {
 	if(userId){
 		var _id = new ObjectID(userId);
 		return new Promise(function(resolve,reject){
-			db.collection('users').findOne({_id: new ObjectID(userId) }, function (err, result) {
+			db.collection('users').findOne({_id: _id }, function (err, result) {
+				console.log(result);
 	        	if (err) {
 	            	response.error = true;
 	            	response.message = "Falha ao salvar usuário";
 	            	resolve(response);
 	        	}
 	        	if(result){
-	        		response.message = "Em construção";
+	        		result.name 	 = user.name;
+	        		result.nickname  = user.nickname;
+	        		result.birthDate = user.birthDate;
+
+	        		db.collection('users').updateOne({
+	        			_id : _id
+	        		},{
+	        			'$set' : result
+	        		}); 
+
+	        		response.message = 'Cagão editado com sucesso';
+
 	        		resolve(response);
+	        		
 	        	}
 	    	});	
 		});

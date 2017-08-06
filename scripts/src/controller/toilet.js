@@ -14,8 +14,8 @@ function save(request,reply) {
         country     : params.country,
         lat         : params.lat,
         lng         : params.lng,
-        user        : params.userId,
-        id          : params.id
+        userId      : params.userId,
+        _id         : params.id
     };
 
     var avaliations = params.avaliations;
