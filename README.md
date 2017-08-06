@@ -4,11 +4,13 @@
 
 API
 ---------------------------------------------
-* POST /user/save
+User /user
+* POST /save
 
   	Parameters
   	```
    { 
+   	id         : string,
    	name       : string,
 		nickname   : string,
 		birthDate  : string || dd/mm/yyyy,
@@ -26,6 +28,7 @@ API
 		}]
    }
   	``` 	
+   Case id <> null, the profile data of the user will be updated
 * POST /user/login
 
   	Parameters
@@ -49,7 +52,8 @@ API
 		}]
    }
    	```
-* GET /toilet/getAll
+Toilet /toilet/
+* GET /getAll
 
   	Response
   	```
@@ -59,6 +63,7 @@ API
 		data     : [{
 			_id	    : string,
 			description : string,
+			title       : string,
 			address     : string,
 			city	    : string,
 			state	    : string,
@@ -77,12 +82,13 @@ API
 		}]
    }
   	```   	 	
-* POST /toilet/save
+* POST /save
 
   	Parameters
   	```
    { 
    	description : string,
+		title       : string,
 		address     : string,
 		city        : string,
 		state       : string,
@@ -104,7 +110,43 @@ API
 		data     : []
    }
   	``` 	
+   Case "lat" and "lng" are empty the API will request the toilet coordinates with geocoder API.
 	
+Avaliation /avaliation/
+* GET /user/{userId}
 
+  	Response
+  	```
+   { 
+   	error    : bool,
+		message  : string,
+		data     : [{
+			userId      : string,
+			toiledId    : string,
+			stars       : integer,
+			observation : string
+		}]
+   }
+  	``` 
+	
+* POST /save
+
+	Parameters
+  	```
+   { 
+   	userId      : string,
+		toiletId    : string,
+		stars       : integer,
+		observation : string
+   }
+  	``` 
+  	Response
+  	```
+   { 
+   	error    : bool,
+		message  : string,
+		data     : []
+   }
+  	``` 	
 
 
