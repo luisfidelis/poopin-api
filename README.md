@@ -4,7 +4,7 @@
 
 API
 ---------------------------------------------
-* User /user
+User /user
 * POST /save
 
   	Parameters
@@ -52,7 +52,7 @@ API
 		}]
    }
    	```
-* Toilet /toilet/
+Toilet /toilet/
 * GET /getAll
 
   	Response
@@ -109,8 +109,7 @@ API
    }
   	``` 	
 	
-
-* Avaliation /avaliation/
+Avaliation /avaliation/
 * GET /user/{userId}
 
   	Response
