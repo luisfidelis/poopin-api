@@ -63,6 +63,7 @@ Toilet /toilet/
 		data     : [{
 			_id	    : string,
 			description : string,
+			title       : string,
 			address     : string,
 			city	    : string,
 			state	    : string,
