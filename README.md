@@ -118,7 +118,12 @@ API
    { 
    	error    : bool,
 		message  : string,
-		data     : []
+		data     : [{
+			userId      : string,
+			toiledId    : string,
+			stars       : integer,
+			observation : string
+		}]
    }
   	``` 
 	
@@ -127,9 +132,9 @@ Parameters
   	```
    { 
    	userId      : string,
-	toiletId    : string,
-	stars       : string,
-	observation : string
+		toiletId    : string,
+		stars       : integer,
+		observation : string
    }
   	``` 
   	Response
