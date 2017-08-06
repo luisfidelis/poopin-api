@@ -92,7 +92,7 @@ API
 	    	userId      : string,
 	    	avaliations : [{
 	    		stars       : integer,
-            		observation : string
+            	observation : string
 		}] 
    }
   	``` 
