@@ -87,6 +87,7 @@ Toilet /toilet/
   	```
    { 
    	description : string,
+		title       : string,
 		address     : string,
 		city        : string,
 		state       : string,
@@ -108,6 +109,7 @@ Toilet /toilet/
 		data     : []
    }
   	``` 	
+   Case "lat" and "lng" are empty the API will request the toilet coordinates with geocoder API.
 	
 Avaliation /avaliation/
 * GET /user/{userId}
