@@ -28,6 +28,7 @@
     "hapi": "^16.4.3",
     "hapi-mongodb": "^6.2.1",
     "hapi-router": "^3.5.0",
+    "mongoose": "^4.11.6",
     "node-geocoder": "^3.19.0",
     "nodemailer": "^4.0.1"
   }

@@ -1,50 +1,43 @@
 'use strict';
 
 var bcrypt 	    = require('bcrypt');
-
 var SMTPService = require('./smtp.js');
+var User        = require('../model/user.js');
+var Utilities   = require('../util/util.js');
+var ObjectId    = Utilities.ObjectId;
 
 const saltRounds = 10;
 
-function save(user,mongo) {
-	const db 		= mongo.db;
-	const ObjectID  = mongo.ObjectID;
-	
-	var userId   = user._id;
-	var userMail = user.email;
+function save(savedUser) {
+
+	var userId   = savedUser._id;
+	var userMail = savedUser.email;
 
 	var response = {
 		"error" : false,
 		"message": "ok",
 		"data":[]
 	}
+
 	if(userId){
-		var _id = new ObjectID(userId);
+		console.log(new ObjectId(userId));
 		return new Promise(function(resolve,reject){
-			db.collection('users').findOne({_id: _id }, function (err, result) {
-				console.log(result);
-	        	if (err) {
+			User.findOne({_id : new ObjectId(userId)}, function(err, user){
+				if (err) {
 	            	response.error = true;
 	            	response.message = "Falha ao salvar usuário";
 	            	resolve(response);
 	        	}
-	        	if(result){
-	        		result.name 	 = user.name;
-	        		result.nickname  = user.nickname;
-	        		result.birthDate = user.birthDate;
-
-	        		db.collection('users').updateOne({
-	        			_id : _id
-	        		},{
-	        			'$set' : result
-	        		}); 
-
+	        	if(user){
+	        		user.name 	   = savedUser.name;
+	        		user.nickname  = savedUser.nickname;
+	        		user.birthDate = savedUser.birthDate;
+	        		console.log(user); 
 	        		response.message = 'Cagão editado com sucesso';
-
 	        		resolve(response);
-	        		
 	        	}
-	    	});	
+			});
+				
 		});
 	}else{
 		return new Promise(function(resolve,reject){
