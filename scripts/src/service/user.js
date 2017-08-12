@@ -2,16 +2,16 @@
 
 var bcrypt 	    = require('bcrypt');
 var SMTPService = require('./smtp.js');
-var User        = require('../model/user.js');
+var User        = require('../model/user.js').User;
+var ObjectId    = require('mongoose').Types.ObjectId;
 var Utilities   = require('../util/util.js');
-var ObjectId    = Utilities.ObjectId;
 
 const saltRounds = 10;
 
-function save(savedUser) {
+function save(userRequest) {
 
-	var userId   = savedUser._id;
-	var userMail = savedUser.email;
+	var userId   = userRequest._id;
+	var userMail = userRequest.email;
 
 	var response = {
 		"error" : false,
@@ -20,28 +20,33 @@ function save(savedUser) {
 	}
 
 	if(userId){
-		console.log(new ObjectId(userId));
 		return new Promise(function(resolve,reject){
-			User.findOne({_id : new ObjectId(userId)}, function(err, user){
+			User.findOne({_id : new ObjectId(userId)},function(err, user){
 				if (err) {
 	            	response.error = true;
 	            	response.message = "Falha ao salvar usuário";
 	            	resolve(response);
 	        	}
 	        	if(user){
-	        		user.name 	   = savedUser.name;
-	        		user.nickname  = savedUser.nickname;
-	        		user.birthDate = savedUser.birthDate;
-	        		console.log(user); 
-	        		response.message = 'Cagão editado com sucesso';
-	        		resolve(response);
+	        		user.name 	   = userRequest.name;
+	        		user.nickname  = userRequest.nickname;
+	        		user.birthDate = userRequest.birthDate;
+	        		User.update(user,function(err, raw){
+	        			if(err){
+	        				response.error = true;
+	            			response.message = "Falha ao atualizar usuário";
+	            			resolve(response);
+	        			}
+	        			response.message = 'Cagão editado com sucesso';
+	        			resolve(response);
+	        		});	        		
 	        	}
 			});
 				
 		});
 	}else{
 		return new Promise(function(resolve,reject){
-			db.collection('users').findOne({email: userMail}, function (err, result) {
+			User.findByEmail(userMail, function(err, result){
 	            if (err) {
 	                response.error = true;
 	                response.message = "Falha ao salvar usuário";
@@ -52,55 +57,47 @@ function save(savedUser) {
 	        		response.message = "E-mail já cadastrado";
 	        		resolve(response);
 	            }else{
-	            	bcrypt.hash(user.password,saltRounds,function(err, hash){
+	            	bcrypt.hash(userRequest.password,saltRounds,function(err, hash){
 						if(err){
 							response.error = true;
 					        response.message = "Falha ao salvar usuário";
 					        resolve(response);
 						}else{
-							user._id      = new ObjectID();
-							user.password = hash;
-							db.collection('users').insertOne(user, function(err, result){
-						    	if(err){
+							userRequest._id      = new ObjectId();
+							userRequest.password = hash;
+							var user  = new User(userRequest);
+							user.save(function(err, raw){
+	        					if(err){
 						    		response.error = true;
 						            response.message = "Falha ao salvar usuário";
 						            resolve(response);
 						    	}
-						    	db.collection('users').findOne({email: userMail}, function (err, result) {
-						            if (err) {
-						                response.error = true;
-						                response.message = "Falha ao retornar ID do usuário";
-						                resolve(response);
-						            }
-						            if(result){
-						            	// setup email data with unicode symbols
-						            	var user = result;			
-							           	var message = 'Parabéns por se tornar um novo cagão na plataforma Poopin, '+user.name;
-							           	if(user.nickname){
-							           		message +=', ou melhor, '+user.nickname;
-							           	}
-							           	message += '.';
+						    	if(raw){
+					            	// setup email data with unicode symbols
+					            	var user = raw;			
+						           	var message = 'Parabéns por se tornar um novo cagão na plataforma Poopin, '+user.name;
+						           	if(user.nickname){
+						           		message +=', ou melhor, '+user.nickname;
+						           	}
+						           	message += '.';
 
-										var mailOptions = {
-										    from    : '"L3Projects👻" <l3projectsweb@gmail.com>', // sender address
-										    to 		: user.email, // list of receivers
-										    subject : 'Novo cagão', // Subject line
-										    text    : message, // plain text body
-										    html    : '<h1>'+message+'</h1>' // html body
-										};
+									var mailOptions = {
+									    from    : '"L3Projects👻" <l3projectsweb@gmail.com>', // sender address
+									    to 		: user.email, // list of receivers
+									    subject : 'Novo cagão', // Subject line
+									    text    : message, // plain text body
+									    html    : '<h1>'+message+'</h1>' // html body
+									};
 
-										SMTPService.sendMail(mailOptions);
-									
-						            	var user = result;
-						            	response.data.push({
-						            		"id" : user._id
-						            	});
-						            	resolve(response);
-						            }
-						   		});
-						    });
+									SMTPService.sendMail(mailOptions);
+	
+					            	response.data.push({
+					            		"id" : user._id.toString()
+					            	});
+					            	resolve(response);
+					            }
+	        				});
 						}
-						
 					});
 	            }
 	   		});
@@ -108,9 +105,8 @@ function save(savedUser) {
 	}
 };
 
-function login(options, mongo){
-    const db = mongo.db;
-    
+function login(options){
+
     var userMail     = options.email;
     var userPassword = options.password;
 
@@ -121,11 +117,10 @@ function login(options, mongo){
     }
 
     return new Promise(function(resolve,reject){
-    	db.collection('users').findOne({email: userMail}, function (err, result) {
+    	User.findByEmail(userMail, function (err, result) {
 		   	if (err) {
 				response.error = true;
 		        response.message = "Falhar ao realizar login";
-		        console.log(response);
 		        resolve(response);
 		    }
 
@@ -142,7 +137,7 @@ function login(options, mongo){
 		    				"email" 	: user.email,
 		    				"name" 		: user.name,
 		    				"nickname"  : user.nickname,
-		    				"birthDate" : user.birthDate
+		    				"birthDate" : user.birthDate instanceof Date ? Utilities.formattedDate(user.birthDate) : null
 		    			});
 		    			resolve(response);
 		    		}            	

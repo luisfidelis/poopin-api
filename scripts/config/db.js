@@ -1,3 +1,7 @@
 module.exports =  {
-    url : 'mongodb://poopin:l3projects@ds127443.mlab.com:27443/poopin'
-};
+    host: 'ds127443.mlab.com',
+    port: 27443,
+    db: 'poopin',
+    username: 'poopin',
+	password: 'l3projects'
+}

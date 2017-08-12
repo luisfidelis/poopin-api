@@ -15,14 +15,13 @@ function save(request,reply) {
 		password  : params.password
 	};
 
-	UserService.save(user, mongo).then(function(response){
+	UserService.save(user).then(function(response){
 		return reply.response(response);	
 	});
 
 };
 
 function login(request, reply){
-    var mongo  = request.mongo;
     var params = request.payload;
     
     var options = {
@@ -31,7 +30,7 @@ function login(request, reply){
 
     };
 
-    UserService.login(options, mongo).then(function(response){
+    UserService.login(options).then(function(response){
     	return reply.response(response);	
     });
 

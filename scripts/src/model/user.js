@@ -1,14 +1,15 @@
 var mongoose   = require('mongoose');
+
 var Utilities  = require('../util/util.js');
 var userSchema = require('../schema/user.js');
 
+var connection = Utilities.connection;
 
+var User = connection.model('users', userSchema);
 
-userSchema.methods.findByEmail = function(cb) {
-	return this.model('user').function({ email : this.email }, cb);
+User.findByEmail = function(email, cb) {
+	return this.model('users').findOne({ email : email }, cb);
 };
-
-userSchema.methods.findById = function(cb){
-	return this.model('user').function({ _id : this._id}, cb);
-}
-module.exports = mongoose.model('user', userSchema);
+module.exports = {
+	User : User
+};

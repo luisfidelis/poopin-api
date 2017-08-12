@@ -1,15 +1,15 @@
 const async = require('async');
+var Avaliation = require('../model/avaliation.js').Avaliation;
+var ObjectId   = require('mongoose').Types.ObjectId;
 
-function save(avaliation,mongo) {
-	const db       = mongo.db;
-	const ObjectID = mongo.ObjectID;
+function save(avaliation) {
 
     var toiletId        = avaliation.toiletId;
-	var toiletIdObj     = new ObjectID(toiletId);
+	var toiletIdObj     = new ObjectId(toiletId);
     avaliation.toiletId = toiletIdObj;
    
     var userId        = avaliation.userId;
-    var userIdObj     = new ObjectID(userId);             
+    var userIdObj     = new ObjectId(userId);             
     avaliation.userId = userIdObj;
 
     var response = {
@@ -19,7 +19,8 @@ function save(avaliation,mongo) {
 	};
 
     return new Promise(function(resolve,reject){
-        db.collection('avaliation').insertOne(avaliation, function(err, result){
+        let avaliation = new Avaliation(avaliation);
+        avaliation.save(function(err, result){
         	if(err){
         		response.error   = true;
                 response.message = "Falha ao salvar a avaliação da sua cagada";
@@ -31,10 +32,8 @@ function save(avaliation,mongo) {
     });
 };
 
-function getByUser(userId, mongo){ 
-    const db       = mongo.db;
-    const ObjectID = mongo.ObjectID;
-    
+function getByUser(userId){ 
+
     var response = {
     	"error" : false,
     	"message": "ok",
@@ -42,7 +41,7 @@ function getByUser(userId, mongo){
     };
 
     return new Promise(function(resolve,reject){
-        db.collection('avaliation').find({userId : new ObjectID(userId)}).toArray(function(err,result){
+        Avaliation.findByUser(new ObjectId(userId),function(err,result){
             if(err){
                 response.error   = true;
                 response.message = "Erro ao buscar cagadas.";

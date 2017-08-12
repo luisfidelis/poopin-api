@@ -1,21 +1,22 @@
 const async = require('async');
 
 var Utilities   = require('../util/util.js');
+var Toilet      = require('../model/toilet.js').Toilet;
+var Avaliation  = require('../model/avaliation.js').Avaliation;
+var ObjectId    = require('mongoose').Types.ObjectId;
 
 var NodeGeocoder = require('node-geocoder');
 
 var geocoder = NodeGeocoder(Utilities.geocoderConfig);
  
-function save(toilet,avaliations,mongo) {
-	const db       = mongo.db;
-	const ObjectID = mongo.ObjectID;
+function save(toilet,avaliations) {
 
     var toiletId    = toilet._id;
-	var toiletIdObj = toiletId ? new ObjectID(toiletId) : toiletId = new ObjectID();
+	var toiletIdObj = toiletId ? new ObjectId(toiletId) : toiletId = new ObjectId();
     toilet._id      = toiletIdObj;
    
     var userId    = toilet.userId;
-    var userIdObj = new ObjectID(userId);             
+    var userIdObj = new ObjectId(userId);             
     toilet.userId = userIdObj;
 
       
@@ -38,13 +39,14 @@ function save(toilet,avaliations,mongo) {
                 var lng = location.longitude;
                 toilet.lat = lat;
                 toilet.lng = lng;
-                db.collection('toilet').insertOne(toilet, function(err, result){
+                let toilet = new Toilet(toilet);
+                toilet.save(function(err, result){
                     if(avaliations && avaliations.length > 0){
                         avaliations.map(function(avaliation){
                             avaliation.userId   = userIdObj;
                             avaliation.toiletId = toiletIdObj; 
                         });
-                        db.collection('avaliation').insertMany(avaliations,function(err,result){
+                        Avaliation.insertMany(avaliations,function(err,result){
                             if(err){
                                 response.error   = true;
                                 response.message = "Falha ao salvar a avaliação da sua cagada";
@@ -63,7 +65,7 @@ function save(toilet,avaliations,mongo) {
 
 function getAll(mongo){ 
     const db       = mongo.db;
-    const ObjectID = mongo.ObjectID;
+    const ObjectId = mongo.ObjectId;
     
     var response = {
     	"error" : false,
@@ -83,7 +85,7 @@ function getAll(mongo){
                 resolve(response);
             }else{
                 async.map(result, function(toilet,callback){
-                    db.collection('avaliation').find({toiletId : new ObjectID(toilet._id)}).toArray(function(err,avaliations){
+                    db.collection('avaliation').find({toiletId : new ObjectId(toilet._id)}).toArray(function(err,avaliations){
                         toilet.avaliations = avaliations;
                         callback(null,toilet);
                     });

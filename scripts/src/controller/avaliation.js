@@ -3,7 +3,6 @@
 var AvaliationService = require('../service/avaliation.js');
 
 function save(request,reply) {
-	var mongo  = request.mongo;	
 	var params = request.payload;
 	
     var avaliation = {
@@ -13,19 +12,18 @@ function save(request,reply) {
         observation : params.observation
     };
 
-    AvaliationService.save(avaliation,mongo).then(function(response){
+    AvaliationService.save(avaliation).then(function(response){
         return reply.response(response);
     });    
 
 };
 
 function getByUser(request, reply){ 
-    var mongo  = request.mongo;
     var params = request.params;
     
     var userId = params.userId;
     
-    AvaliationService.getByUser(userId, mongo).then(function(response){
+    AvaliationService.getByUser(userId).then(function(response){
         return reply.response(response);                
     });
 

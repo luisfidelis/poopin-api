@@ -2,21 +2,22 @@
 
 module = {};
 
+const Hapi     = require('hapi');
+
 const HOMOLOGATION_ENVIRONMENT = 1;
 const PRODUCTION_ENVIRONMENT   = 2;
 
+
 const connections = require('../config/environment.js');
 
-const Hapi   = require('hapi');
-const server = new Hapi.Server();
+const Utilities   = require('../src/util/util.js');
 
-var envMode  = HOMOLOGATION_ENVIRONMENT; 
+var envMode    = HOMOLOGATION_ENVIRONMENT; 
+var connection = connections[envMode];
 
-server.connection(connections[envMode]);
+var server   = new Hapi.Server();
 
-server.start(function() {
-    console.log(`Server started at ${server.info.uri}`);
-});
+server.connection(connection);
 
 // --- Services
 
@@ -27,6 +28,12 @@ server.register({
     }
 },function (err) {
     if (err) throw err;
+    server.start(function() {
+        console.log(`Server started at ${server.info.uri}`);
+    });
 });
+
+
+
 
 
