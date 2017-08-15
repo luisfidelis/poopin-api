@@ -38,13 +38,13 @@ function save(toilet,avaliations,mongo) {
                 var lng = location.longitude;
                 toilet.lat = lat;
                 toilet.lng = lng;
-                db.collection('toilet').insertOne(toilet, function(err, result){
+                db.collection('toilets').insertOne(toilet, function(err, result){
                     if(avaliations && avaliations.length > 0){
                         avaliations.map(function(avaliation){
                             avaliation.userId   = userIdObj;
                             avaliation.toiletId = toiletIdObj; 
                         });
-                        db.collection('avaliation').insertMany(avaliations,function(err,result){
+                        db.collection('avaliations').insertMany(avaliations,function(err,result){
                             if(err){
                                 response.error   = true;
                                 response.message = "Falha ao salvar a avaliação da sua cagada";
@@ -72,7 +72,7 @@ function getAll(mongo){
     };
 
     return new Promise(function(resolve,reject){
-        db.collection('toilet').find({}).toArray(function(err,result){
+        db.collection('toilets').find({}).toArray(function(err,result){
             if(err){
                 response.error   = true;
                 response.message = "Erro ao buscar banheiros.";
@@ -83,7 +83,7 @@ function getAll(mongo){
                 resolve(response);
             }else{
                 async.map(result, function(toilet,callback){
-                    db.collection('avaliation').find({toiletId : new ObjectID(toilet._id)}).toArray(function(err,avaliations){
+                    db.collection('avaliations').find({toiletId : new ObjectID(toilet._id)}).toArray(function(err,avaliations){
                         toilet.avaliations = avaliations;
                         callback(null,toilet);
                     });

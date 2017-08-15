@@ -19,7 +19,7 @@ function save(avaliation,mongo) {
 	};
 
     return new Promise(function(resolve,reject){
-        db.collection('avaliation').insertOne(avaliation, function(err, result){
+        db.collection('avaliations').insertOne(avaliation, function(err, result){
         	if(err){
         		response.error   = true;
                 response.message = "Falha ao salvar a avaliação da sua cagada";
@@ -42,7 +42,7 @@ function getByUser(userId, mongo){
     };
 
     return new Promise(function(resolve,reject){
-        db.collection('avaliation').find({userId : new ObjectID(userId)}).toArray(function(err,result){
+        db.collection('avaliations').find({userId : new ObjectID(userId)}).toArray(function(err,result){
             if(err){
                 response.error   = true;
                 response.message = "Erro ao buscar cagadas.";
