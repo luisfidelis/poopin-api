@@ -27,46 +27,78 @@ function save(toilet,avaliations) {
 	};
 
     return new Promise(function(resolve,reject){
-        var geocoderAddress = toilet.address+', '+toilet.city+', '+toilet.state+', '+toilet.country;
-        geocoder.geocode(geocoderAddress, function(err, res) {
-            if(err){
+        if(!toilet.lat || !toilet.lng){
+            var geocoderAddress = toilet.address+', '+toilet.city+', '+toilet.state+', '+toilet.country;
+            geocoder.geocode(geocoderAddress, function(err, res) {
+                if(err){
+                    response.error   = true;
+                    response.message = "Falha ao salvar cagada";
+                    resolve(response);
+                }else{
+                    var location = res[0];
+                    var lat = location.latitude;
+                    var lng = location.longitude;
+                    toilet.lat = lat;
+                    toilet.lng = lng;
+                    let toilet = new Toilet(toilet);
+                    toilet.save(function(err, result){
+                        if(avaliations && avaliations.length > 0){
+                            avaliations.map(function(avaliation){
+                                avaliation.userId   = userIdObj;
+                                avaliation.toiletId = toiletIdObj; 
+                            });
+                            Avaliation.insertMany(avaliations,function(err,result){
+                                if(err){
+                                    response.error   = true;
+                                    response.message = "Falha ao salvar a avaliação da sua cagada";
+                                    resolve(response);
+                                }
+                            });
+                        }
+                        response.message = "Cagada salva com sucesso";
+                        resolve(response);
+                    });
+                }
+            });  
+        }else{
+            geocoder.reverse({lat: toilet.lat, lon: toilet.lng}).then(function(res){
+                if(res && res.raw.status == "OK" ){
+                    var location = res[0];
+                    this.address = location.streetName+', '+location.streetNumber;
+                    this.city    = location.city;
+                    this.state   = location.state;
+                    this.country = location.country;
+                    let toilet = new Toilet(this);
+                    toilet.save(function(err, result){
+                        if(avaliations && avaliations.length > 0){
+                            avaliations.map(function(avaliation){
+                                avaliation.userId   = userIdObj;
+                                avaliation.toiletId = toiletIdObj; 
+                            });
+                            Avaliation.insertMany(avaliations,function(err,result){
+                                if(err){
+                                    response.error   = true;
+                                    response.message = "Falha ao salvar a avaliação da sua cagada";
+                                    resolve(response);
+                                }
+                            });
+                        }
+                        response.message = "Cagada salva com sucesso";
+                        resolve(response);
+                    });
+                }
+            }.bind(toilet))
+            .catch(function(err){
                 response.error   = true;
                 response.message = "Falha ao salvar cagada";
                 resolve(response);
-            }else{
-                var location = res[0];
-                var lat = location.latitude;
-                var lng = location.longitude;
-                toilet.lat = lat;
-                toilet.lng = lng;
-                let toilet = new Toilet(toilet);
-                toilet.save(function(err, result){
-                    if(avaliations && avaliations.length > 0){
-                        avaliations.map(function(avaliation){
-                            avaliation.userId   = userIdObj;
-                            avaliation.toiletId = toiletIdObj; 
-                        });
-                        Avaliation.insertMany(avaliations,function(err,result){
-                            if(err){
-                                response.error   = true;
-                                response.message = "Falha ao salvar a avaliação da sua cagada";
-                                resolve(response);
-                            }
-                        });
-                    }
-                    response.message = "Cagada salva com sucesso";
-                    resolve(response);
-                });
-            }
-        });  
-        
-    });
+            });
+        }
+    }.bind(toilet));
 };
 
-function getAll(mongo){ 
-    const db       = mongo.db;
-    const ObjectId = mongo.ObjectId;
-    
+function getAll(){ 
+   
     var response = {
     	"error" : false,
     	"message": "ok",
@@ -74,7 +106,9 @@ function getAll(mongo){
     };
 
     return new Promise(function(resolve,reject){
-        db.collection('toilet').find({}).toArray(function(err,result){
+        Toilet.find({}).
+        populate('avaliations').
+        exec(function (err, result) {
             if(err){
                 response.error   = true;
                 response.message = "Erro ao buscar banheiros.";
@@ -84,24 +118,12 @@ function getAll(mongo){
                 response.message = "Nenhum banheiro encontrado.";
                 resolve(response);
             }else{
-                async.map(result, function(toilet,callback){
-                    db.collection('avaliation').find({toiletId : new ObjectId(toilet._id)}).toArray(function(err,avaliations){
-                        toilet.avaliations = avaliations;
-                        callback(null,toilet);
-                    });
-                },function(err,results){
-                    if(err){
-                        response.error = true;
-                        response.message = "Erro ao buscar banheiros";
-                        resolve(response);
-                    }
-                    response.data = results;
-                    resolve(response);
-                });
+                response.data = result;
+                resolve(response);
             }
-        });     
-    });
- 
+        });
+            
+    });     
 };
 
 var exports = module.exports = {

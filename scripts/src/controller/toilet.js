@@ -28,9 +28,8 @@ function save(request,reply) {
 };
 
 function getAll(request, reply){ 
-    var mongo = request.mongo;
     
-    ToiletService.getAll(mongo).then(function(response){
+    ToiletService.getAll().then(function(response){
         return reply.response(response);                
     });
 

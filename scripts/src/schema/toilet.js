@@ -10,5 +10,11 @@ module.exports = new Schema({
     state 		: String, 
     country 	: String, 
     lat 		: String, 
-    lng 		: String 
+    lng 		: String,
+    avaliations : [{ 
+    	toiletId    : {type: Schema.ObjectId, ref: 'toilets' },
+    	stars       : Number,
+    	observation : String,
+    	userId      : {type: Schema.ObjectId, ref: 'users'}
+    }] 
 });
