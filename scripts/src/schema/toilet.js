@@ -11,6 +11,7 @@ module.exports = new Schema({
     country 	: String, 
     lat 		: String, 
     lng 		: String,
+    userId      : {type: Schema.ObjectId, ref: 'users'},
     avaliations : [{ 
     	toiletId    : {type: Schema.ObjectId, ref: 'toilets' },
     	stars       : Number,

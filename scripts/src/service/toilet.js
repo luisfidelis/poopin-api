@@ -66,7 +66,11 @@ function save(toilet,avaliations) {
                     var location = res[0];
                     this.address = location.streetName+', '+location.streetNumber;
                     this.city    = location.city;
-                    this.state   = location.state;
+                    if(location.administrativeLevels && location.administrativeLevels.level1short ){
+                        this.state   = location.administrativeLevels.level1short;
+                    }else{
+                        this.state   = location.administrativeLevels.level1short;
+                    }
                     this.country = location.country;
                     let toilet = new Toilet(this);
                     toilet.save(function(err, result){
@@ -107,7 +111,8 @@ function getAll(){
 
     return new Promise(function(resolve,reject){
         Toilet.find({}).
-        populate('avaliations').
+        populate({path: 'avaliations', select:'stars observation'}).
+        populate({path: 'userId', select:'name nickname'}).
         exec(function (err, result) {
             if(err){
                 response.error   = true;
@@ -118,12 +123,12 @@ function getAll(){
                 response.message = "Nenhum banheiro encontrado.";
                 resolve(response);
             }else{
-                response.data = result;
-                resolve(response);
-            }
-        });
-            
-    });     
+                var toilets   = result;
+                response.data = toilets;
+                resolve(response);     
+            }    
+        }); 
+    });    
 };
 
 var exports = module.exports = {
