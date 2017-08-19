@@ -74,9 +74,9 @@ Toilet /toilet/
 				{
 					id		: string,
 				    	toiletId	: string,
-				    	stars	: integer,
-				    	observation : string,
-				    	userId      : {
+				    	stars		: integer,
+				    	observation 	: string,
+				    	userId      	: {
 						_id      : string,
 						name     : string,
 						nickname : string
@@ -143,11 +143,7 @@ Avaliation /avaliation/
 				country	    : string,
 				lat	    : string,
 				lng	    : string,
-				userId      : {
-					_id      : string,
-					name     : string,
-					nickname : string		
-				}
+				userId      : string
 			}
 		}]
    }
