@@ -78,7 +78,12 @@ Toilet /toilet/
 				    stars	: integer,
 				    observation : string
 				}
-			]
+			],
+			userId : {
+				_id      : string,
+				name     : string,
+				nickname : string
+			}
 		}]
    }
   	```   	 	
@@ -111,6 +116,7 @@ Toilet /toilet/
    }
   	``` 	
    Case "lat" and "lng" are empty the API will request the toilet coordinates with geocoder API.
+   Case "lat" and "lng" aren't empty the API will request the toilet address info with geocorder API (reverse search).
 	
 Avaliation /avaliation/
 * GET /user/{userId}
