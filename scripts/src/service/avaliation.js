@@ -1,5 +1,7 @@
-const async = require('async');
+const async    = require('async');
 var Avaliation = require('../model/avaliation.js').Avaliation;
+var Toilet     = require('../model/toilet.js').Toilet;
+var User       = require('../model/user.js').User;
 var ObjectId   = require('mongoose').Types.ObjectId;
 
 function save(avaliation) {
@@ -46,14 +48,43 @@ function getByUser(userId){
                 response.error   = true;
                 response.message = "Erro ao buscar cagadas.";
                 resolve(response);
+            }
+        }).
+        populate({
+            path: 'toiletId' , 
+            select: 'description address city state country lat lng userId'
+        }).
+        exec(function(err, result){
+            if(err){
+                response.error   = true;
+                response.message = "Erro ao mapear o banheiro das cagadas.";
+                resolve(response);
             }else if(result.length == 0){
                 response.error   = true;
                 response.message = "Nenhuma cagada encontrada.";
                 resolve(response);
             }else{
-                response.data = result;
-                resolve(response);
-            }
+                // var toilet = result.toiletId;
+                // if(toilet){
+                //     toilet.populate({
+                //         'path'   : 'userId',
+                //         'select' : 'name nickname'  
+                //     }).
+                //     exec(function(err,toilet){
+                //         if(err){
+                //             response.error   = true;
+                //             response.message = "Erro ao mapear cagadas.";
+                //             resolve(response);
+                //         }
+                //         result.toiletId = toilet;
+                //         response.data = result;
+                //         resolve(response); 
+                //     })
+                // }else{
+                    response.data = result;
+                    resolve(response);   
+                //}
+            }            
         });     
     });
  

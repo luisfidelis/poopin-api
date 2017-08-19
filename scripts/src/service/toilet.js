@@ -124,8 +124,36 @@ function getAll(){
                 resolve(response);
             }else{
                 var toilets   = result;
-                response.data = toilets;
-                resolve(response);     
+                async.map(toilets,
+                function(toilet,callback){
+                    let toiletId = toilet._id;
+                    Avaliation.findByToilet(new ObjectId(toiletId),function(err,result){
+                        if(err){
+                            response.error   = true;
+                            response.message = "Erro ao mapear cagadas.";
+                            resolve(response);
+                        }
+                    }).
+                    populate({path: 'userId', select:'name nickname'}).
+                    exec(function(err, result){
+                        if(err){
+                            response.error   = true;
+                            response.message = "Erro ao mapear cagadas.";
+                            resolve(response); 
+                        }
+                        toilet.avaliations = result;
+                        callback(null,toilet);
+                    });;
+                },
+                function(err, result){
+                    if(err){
+                        response.error   = true;
+                        response.message = "Erro ao mapear cagadas.";
+                        resolve(response);
+                    }
+                    response.data = result;
+                    resolve(response); 
+                });                
             }    
         }); 
     });    

@@ -12,7 +12,7 @@ const connections = require('../config/environment.js');
 
 const Utilities   = require('../src/util/util.js');
 
-var envMode    = PRODUCTION_ENVIRONMENT; 
+var envMode    = HOMOLOGATION_ENVIRONMENT; 
 var connection = connections[envMode];
 
 var server   = new Hapi.Server();
