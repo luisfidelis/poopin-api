@@ -64,26 +64,8 @@ function getByUser(userId){
                 response.message = "Nenhuma cagada encontrada.";
                 resolve(response);
             }else{
-                // var toilet = result.toiletId;
-                // if(toilet){
-                //     toilet.populate({
-                //         'path'   : 'userId',
-                //         'select' : 'name nickname'  
-                //     }).
-                //     exec(function(err,toilet){
-                //         if(err){
-                //             response.error   = true;
-                //             response.message = "Erro ao mapear cagadas.";
-                //             resolve(response);
-                //         }
-                //         result.toiletId = toilet;
-                //         response.data = result;
-                //         resolve(response); 
-                //     })
-                // }else{
-                    response.data = result;
-                    resolve(response);   
-                //}
+                response.data = result;
+                resolve(response);   
             }            
         });     
     });
