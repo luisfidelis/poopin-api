@@ -72,11 +72,15 @@ Toilet /toilet/
 			lng	    : string,
 			avaliations: [
 				{
-				    _id		: string,
-				    toiletId	: string,
-				    userId      : string,
-				    stars	: integer,
-				    observation : string
+					id		: string,
+				    	toiletId	: string,
+				    	stars	: integer,
+				    	observation : string,
+				    	userId      : {
+						_id      : string,
+						name     : string,
+						nickname : string
+				    	}	
 				}
 			],
 			userId : {
@@ -128,9 +132,23 @@ Avaliation /avaliation/
 		message  : string,
 		data     : [{
 			userId      : string,
-			toiledId    : string,
 			stars       : integer,
 			observation : string
+			toiledId    : {
+				description : string,
+				title       : string,
+				address     : string,
+				city	    : string,
+				state	    : string,
+				country	    : string,
+				lat	    : string,
+				lng	    : string,
+				userId      : {
+					_id      : string,
+					name     : string,
+					nickname : string		
+				}
+			}
 		}]
    }
   	``` 
