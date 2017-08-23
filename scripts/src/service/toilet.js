@@ -126,7 +126,7 @@ function getAll(){
                 var toilets   = result;
                 async.map(toilets,
                 function(toilet,callback){
-                    let toiletId = toilet._id;
+                    var toiletId = toilet._id;
                     Avaliation.findByToilet(new ObjectId(toiletId),function(err,result){
                         if(err){
                             response.error   = true;

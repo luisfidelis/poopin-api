@@ -14,6 +14,9 @@ function save(avaliation) {
     var userIdObj     = new ObjectId(userId);             
     avaliation.userId = userIdObj;
 
+    var _id           = new ObjectId();
+    avaliation._id    = _id;
+
     var response = {
 		"error" : false,
 		"message": "ok",
@@ -27,7 +30,7 @@ function save(avaliation) {
         		response.error   = true;
                 response.message = "Falha ao salvar a avaliação da sua cagada";
                 resolve(response);
-        	}
+            }
             response.message = "A avaliação da sua cagada foi salva com sucesso";
         	resolve(response);
         });
