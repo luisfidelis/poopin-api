@@ -3,6 +3,14 @@ var Avaliation = require('../model/avaliation.js').Avaliation;
 var Toilet     = require('../model/toilet.js').Toilet;
 var User       = require('../model/user.js').User;
 var ObjectId   = require('mongoose').Types.ObjectId;
+var mongoose   = require('mongoose');
+var dbConfig   = require('../../config/db.js');
+
+var db = mongoose.createConnection('mongodb://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.host +':'+dbConfig.port+'/' + dbConfig.db, { useMongoClient: true });
+db.on('error', console.error.bind(console, 'connection error'));
+db.once('open', function callback() {
+    console.log("Connection with database succeeded.");
+});
 
 function save(avaliation) {
 
@@ -32,8 +40,8 @@ function save(avaliation) {
                 resolve(response);
             }
             response.message = "A avaliação da sua cagada foi salva com sucesso";
-        	resolve(response);
-        });
+            resolve(response);
+        });    
     });
 };
 
