@@ -12,18 +12,18 @@ db.once('open', function callback() {
     console.log("Connection with database succeeded.");
 });
 
-function save(avaliation) {
+function save(avaliationToSave) {
 
-    var toiletId        = avaliation.toiletId;
+    var toiletId        = avaliationToSave.toiletId;
 	var toiletIdObj     = new ObjectId(toiletId);
-    avaliation.toiletId = toiletIdObj;
+    avaliationToSave.toiletId = toiletIdObj;
    
-    var userId        = avaliation.userId;
+    var userId        = avaliationToSave.userId;
     var userIdObj     = new ObjectId(userId);             
-    avaliation.userId = userIdObj;
+    avaliationToSave.userId = userIdObj;
 
     var _id           = new ObjectId();
-    avaliation._id    = _id;
+    avaliationToSave._id    = _id;
 
     var response = {
 		"error" : false,
@@ -32,9 +32,11 @@ function save(avaliation) {
 	};
 
     return new Promise(function(resolve,reject){
-        var avaliation = new Avaliation(avaliation);
+        var avaliation = new Avaliation(avaliationToSave);
         avaliation.save(function(err){
            	if(err){
+                console.log(err);
+                return;
         		response.error   = true;
                 response.message = "Falha ao salvar a avaliação da sua cagada";
                 resolve(response);
