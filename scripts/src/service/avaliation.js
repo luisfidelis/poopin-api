@@ -25,7 +25,7 @@ function save(avaliation) {
 
     return new Promise(function(resolve,reject){
         var avaliation = new Avaliation(avaliation);
-        avaliation.save(function(err, result){
+        avaliation.save(function(err){
            	if(err){
         		response.error   = true;
                 response.message = "Falha ao salvar a avaliação da sua cagada";
