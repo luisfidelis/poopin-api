@@ -3,6 +3,8 @@ var Avaliation = require('../model/avaliation.js').Avaliation;
 var Toilet     = require('../model/toilet.js').Toilet;
 var User       = require('../model/user.js').User;
 var ObjectId   = require('mongoose').Types.ObjectId;
+var mongoose   = require('mongoose');
+mongoose.Promise = require('bluebird');
 
 function save(avaliation) {
 
@@ -21,7 +23,7 @@ function save(avaliation) {
 	};
 
     return new Promise(function(resolve,reject){
-        let avaliation = new Avaliation(avaliation);
+        var avaliation = new Avaliation(avaliation);
         avaliation.save(function(err, result){
            	if(err){
         		response.error   = true;

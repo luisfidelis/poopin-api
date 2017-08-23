@@ -1,10 +1,13 @@
 'use strict';
 
-var bcrypt 	    = require('bcrypt');
-var SMTPService = require('./smtp.js');
-var User        = require('../model/user.js').User;
-var ObjectId    = require('mongoose').Types.ObjectId;
-var Utilities   = require('../util/util.js');
+var bcrypt 	     = require('bcrypt');
+var SMTPService  = require('./smtp.js');
+var User         = require('../model/user.js').User;
+var ObjectId     = require('mongoose').Types.ObjectId;
+var Utilities    = require('../util/util.js');
+var createToken  = require('../util/token.js').createToken;
+var mongoose     = require('mongoose')
+mongoose.Promise = require('bluebird');
 
 const saltRounds = 10;
 
@@ -65,7 +68,7 @@ function save(userRequest) {
 						}else{
 							userRequest._id      = new ObjectId();
 							userRequest.password = hash;
-							var user  = new User(userRequest);
+							let user  = new User(userRequest);
 							user.save(function(err, raw){
 	        					if(err){
 						    		response.error = true;
@@ -92,7 +95,7 @@ function save(userRequest) {
 									SMTPService.sendMail(mailOptions);
 	
 					            	response.data.push({
-					            		"id" : user._id.toString()
+					            		"id" : createToken(user._id.toString())
 					            	});
 					            	resolve(response);
 					            }

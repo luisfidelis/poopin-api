@@ -3,6 +3,7 @@ var mongoose   = require('mongoose');
 var smtpConfig     = require('../../config/smtp.js');
 var dbConfig       = require('../../config/db.js');
 var geocoderConfig = require('../../config/geocoder.js');
+var jwt            = require('../../config/jwt.js');
 
 var ObjectId   = mongoose.Types.ObjectId;
 
@@ -27,12 +28,15 @@ function formattedDate(d = new Date) {
   return `${month}/${day}/${year}`;
 }
 
+
+
 module.exports = {
 	smtpConfig 	   : smtpConfig,
 	ObjectId       : ObjectId,
 	geocoderConfig : geocoderConfig,
 	connection     : db,
-	formattedDate  : formattedDate
+  formattedDate  : formattedDate,
+  jwt            : jwt
 };
 
 
