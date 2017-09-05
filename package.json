@@ -28,6 +28,7 @@
     "bluebird": "^3.5.0",
     "hapi": "^16.4.3",
     "hapi-auth-jwt": "^4.0.0",
+    "hapi-auth-jwt2": "^7.3.0",
     "hapi-mongodb": "^6.2.1",
     "hapi-router": "^3.5.0",
     "jsonwebtoken": "^7.4.3",

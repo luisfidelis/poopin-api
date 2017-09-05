@@ -6,10 +6,23 @@ module.exports = [
 	{
 		path    : group+'/save',
 		method  : 'POST',
-		handler :  UserController.save		
-	},{
+		handler : UserController.save,
+		config : {
+			auth: false
+		}
+	},
+	{
+		path : group+'/save',
+		method : 'PUT',
+		handler : UserController.save,
+
+	},
+	{
 		path    : group+'/login',
 		method  : 'POST',
-		handler : UserController.login	
+		handler : UserController.login,
+		config: {
+			auth: false 
+		}	
 	}
 ];

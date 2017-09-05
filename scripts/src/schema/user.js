@@ -7,6 +7,6 @@ module.exports = new Schema({
   	name      : String,
   	nickname  : String,
   	email     : String,
-  	birthDate : {type: FormatDate, format: 'DD/MM/YYYY'},
+  	birthDate : {type: Date},//FormatDate, format: 'DD/MM/YYYY'},
   	password  : String
 });

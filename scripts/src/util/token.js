@@ -10,7 +10,7 @@ const secret = require('../../config/jwt.js');
 function createToken(userId) {
   let scopes;
   // Sign the JWT
-  return jwt.sign({ _id: userId, scope: scopes }, secret.auth, { algorithm: 'HS256', expiresIn: "4h" } );
+  return jwt.sign({ _id: userId }, secret, { algorithm: 'HS256', expiresIn: "5h" } );
 }
 
 module.exports = {

@@ -23,7 +23,7 @@ function save(avaliation) {
 	};
 
     return new Promise(function(resolve,reject){
-        var avaliation = new Avaliation(avaliation);
+        avaliation = new Avaliation(avaliation);
         avaliation.save(function(err, result){
            	if(err){
         		response.error   = true;

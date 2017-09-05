@@ -6,8 +6,8 @@ var User         = require('../model/user.js').User;
 var ObjectId     = require('mongoose').Types.ObjectId;
 var Utilities    = require('../util/util.js');
 var createToken  = require('../util/token.js').createToken;
-var mongoose     = require('mongoose')
-mongoose.Promise = require('bluebird');
+//var mongoose     = require('mongoose')
+//mongoose.Promise = require('bluebird');
 
 const saltRounds = 10;
 
@@ -68,25 +68,25 @@ function save(userRequest) {
 						}else{
 							userRequest._id      = new ObjectId();
 							userRequest.password = hash;
-							let user  = new User(userRequest);
-							user.save(function(err, raw){
-	        					if(err){
+							var newUser  = new User(userRequest);
+							newUser.save(function(err, raw){
+								if(err){
 						    		response.error = true;
 						            response.message = "Falha ao salvar usuário";
 						            resolve(response);
 						    	}
 						    	if(raw){
 					            	// setup email data with unicode symbols
-					            	var user = raw;			
-						           	var message = 'Parabéns por se tornar um novo cagão na plataforma Poopin, '+user.name;
-						           	if(user.nickname){
-						           		message +=', ou melhor, '+user.nickname;
+					            	let savedUser = raw;			
+						           	var message   = 'Parabéns por se tornar um novo cagão na plataforma Poopin, '+savedUser.name;
+						           	if(savedUser.nickname){
+						           		message +=', ou melhor, '+savedUser.nickname;
 						           	}
 						           	message += '.';
 
 									var mailOptions = {
 									    from    : '"L3Projects👻" <l3projectsweb@gmail.com>', // sender address
-									    to 		: user.email, // list of receivers
+									    to 		: savedUser.email, // list of receivers
 									    subject : 'Novo cagão', // Subject line
 									    text    : message, // plain text body
 									    html    : '<h1>'+message+'</h1>' // html body
@@ -95,7 +95,8 @@ function save(userRequest) {
 									SMTPService.sendMail(mailOptions);
 	
 					            	response.data.push({
-					            		"id" : createToken(user._id.toString())
+										"id" 			: savedUser._id.toString(),
+										"accessToken"	: createToken(savedUser._id.toString())
 					            	});
 					            	resolve(response);
 					            }
@@ -136,11 +137,12 @@ function login(options){
 		    			resolve(response);
 		    		}else{
 		    			response.data.push({
-		    				"id"        : user._id,
-		    				"email" 	: user.email,
-		    				"name" 		: user.name,
-		    				"nickname"  : user.nickname,
-		    				"birthDate" : user.birthDate instanceof Date ? Utilities.formattedDate(user.birthDate) : null
+							"id"     	   	: user._id,
+							"accessToken"	: createToken(user._id.toString()),
+		    				"email" 		: user.email,
+		    				"name" 			: user.name,
+		    				"nickname"  	: user.nickname,
+		    				"birthDate" 	: user.birthDate instanceof Date ? Utilities.formattedDate(user.birthDate) : null
 		    			});
 		    			resolve(response);
 		    		}            	
@@ -153,6 +155,8 @@ function login(options){
    		});
    	});	
 };
+
+
 
 var exports = module.exports = {
 	save  : save,

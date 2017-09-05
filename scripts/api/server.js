@@ -19,16 +19,21 @@ var connection = connections[envMode];
 var server   = new Hapi.Server();
 
 server.connection(connection);
-
+// bring your own validation function
+var validate = function (decoded, request, callback) {
+    callback(null,true);
+};
 // --- Services
-server.register(require('hapi-auth-jwt'), (err) => {
+server.register(require('hapi-auth-jwt2'), (err) => {
     if (err) throw err;
     server.auth.strategy('jwt', 'jwt', {
-        key: jwt.auth,
+        key: jwt,
+        validateFunc: validate,
         verifyOptions: { 
             algorithms: ['HS256'] 
         }
     });
+    server.auth.default('jwt');
 });
 server.register({
     register: require('hapi-router'),

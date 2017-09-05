@@ -1,3 +1,5 @@
+
+'use strict';
 var mongoose   = require('mongoose');
 
 var smtpConfig     = require('../../config/smtp.js');
@@ -26,9 +28,7 @@ function formattedDate(d = new Date) {
   if (day.length < 2) day = '0' + day;
 
   return `${month}/${day}/${year}`;
-}
-
-
+};
 
 module.exports = {
 	smtpConfig 	   : smtpConfig,
