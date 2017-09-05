@@ -30,8 +30,9 @@ User /user
   	``` 	
    Case id <> null, the profile data of the user will be updated
 * PUT /save
+	<br />
 	Header
-		```
+	```
    { 
    	Authorization        : accessToken
    }
@@ -84,8 +85,9 @@ User /user
    	```
 Toilet /toilet/
 * GET /getAll
+	<br />
 	Header
-		```
+	```
    { 
    	Authorization        : accessToken
    }
@@ -127,8 +129,9 @@ Toilet /toilet/
    }
   	```   	 	
 * POST /save
+	<br />
 	Header
-		```
+	```
    { 
    	Authorization        : accessToken
    }
@@ -164,8 +167,9 @@ Toilet /toilet/
 	
 Avaliation /avaliation/
 * GET /user/{userId}
+	<br />
 	Header
-		```
+	```
    { 
    	Authorization        : accessToken
    }
@@ -195,8 +199,9 @@ Avaliation /avaliation/
   	``` 
 	
 * POST /save
+	<br />
 	Header
-		```
+	```
    { 
    	Authorization        : accessToken
    }
