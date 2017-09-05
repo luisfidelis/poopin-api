@@ -20,7 +20,10 @@ function save(request,reply) {
 	});
 
 };
-
+function checkRoute(request, reply){
+	console.log(request);
+	console.log(reply);
+}
 function login(request, reply){
     var params = request.payload;
     
@@ -36,9 +39,11 @@ function login(request, reply){
 
 };
 
+
 var exports = module.exports = {
 	save  : save,
-	login : login
+	login : login,
+	checkRoute : checkRoute
 };
 
 

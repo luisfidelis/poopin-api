@@ -5,6 +5,7 @@ var User       = require('../model/user.js').User;
 var ObjectId   = require('mongoose').Types.ObjectId;
 var mongoose   = require('mongoose');
 var dbConfig   = require('../../config/db.js');
+mongoose.Promise = require('bluebird');
 
 var db = mongoose.createConnection('mongodb://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.host +':'+dbConfig.port+'/' + dbConfig.db, { useMongoClient: true });
 db.on('error', console.error.bind(console, 'connection error'));

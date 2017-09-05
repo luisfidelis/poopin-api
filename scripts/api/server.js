@@ -11,6 +11,7 @@ const PRODUCTION_ENVIRONMENT   = 2;
 const connections = require('../config/environment.js');
 
 const Utilities   = require('../src/util/util.js');
+var   jwt         = require('../config/jwt.js');
 
 var envMode    = PRODUCTION_ENVIRONMENT; 
 var connection = connections[envMode];
@@ -18,9 +19,22 @@ var connection = connections[envMode];
 var server   = new Hapi.Server();
 
 server.connection(connection);
-
+// bring your own validation function
+var validate = function (decoded, request, callback) {
+    callback(null,true);
+};
 // --- Services
-
+server.register(require('hapi-auth-jwt2'), (err) => {
+    if (err) throw err;
+    server.auth.strategy('jwt', 'jwt', {
+        key: jwt,
+        validateFunc: validate,
+        verifyOptions: { 
+            algorithms: ['HS256'] 
+        }
+    });
+    server.auth.default('jwt');
+});
 server.register({
     register: require('hapi-router'),
     options: {
