@@ -28,7 +28,7 @@ User /user
 		}]
    }
   	``` 	
-   Case id <> null, the profile data of the user will be updated
+   Obs.: Creates a new user.
 * PUT /save
 	<br />
 	Header
@@ -58,7 +58,7 @@ User /user
 		}]
    }
   	``` 	
-   Case id <> null, the profile data of the user will be updated
+   Obs.: Updates an user.
 * POST /user/login
 
   	Parameters
