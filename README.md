@@ -10,6 +10,36 @@ User /user
   	Parameters
   	```
    { 
+   	name       : string,
+		nickname   : string,
+		birthDate  : string || dd/mm/yyyy,
+		email      : atring,
+		password   : string 
+   }
+  	``` 
+  	Response
+  	```
+   { 
+   	error    : bool,
+		message  : string,
+		data     : [{
+			_id  	    : string,
+			accessToken : string
+		}]
+   }
+  	``` 	
+   Obs.: Creates a new user.
+* PUT /save
+	<br />
+	Header
+	```
+   { 
+   	Authorization        : accessToken
+   }
+  	``` 
+  	Parameters
+  	```
+   { 
    	id         : string,
    	name       : string,
 		nickname   : string,
@@ -28,7 +58,7 @@ User /user
 		}]
    }
   	``` 	
-   Case id <> null, the profile data of the user will be updated
+   Obs.: Updates an user.
 * POST /user/login
 
   	Parameters
@@ -44,17 +74,24 @@ User /user
    	error    : bool,
 		message  : string,
 		data     : [{
-			_id  	   : string,
-			name       : string,
-			nickname   : string,
-			birthDate  : string || dd/mm/yyyy,
-			email      : atring
+			_id  	    : string,
+			name        : string,
+			accessToken : string
+			nickname    : string,
+			birthDate   : string || dd/mm/yyyy,
+			email       : atring
 		}]
    }
    	```
 Toilet /toilet/
 * GET /getAll
-
+	<br />
+	Header
+	```
+   { 
+   	Authorization        : accessToken
+   }
+  	``` 
   	Response
   	```
    { 
@@ -92,7 +129,13 @@ Toilet /toilet/
    }
   	```   	 	
 * POST /save
-
+	<br />
+	Header
+	```
+   { 
+   	Authorization        : accessToken
+   }
+  	``` 
   	Parameters
   	```
    { 
@@ -124,7 +167,13 @@ Toilet /toilet/
 	
 Avaliation /avaliation/
 * GET /user/{userId}
-
+	<br />
+	Header
+	```
+   { 
+   	Authorization        : accessToken
+   }
+  	``` 
   	Response
   	```
    { 
@@ -150,7 +199,13 @@ Avaliation /avaliation/
   	``` 
 	
 * POST /save
-
+	<br />
+	Header
+	```
+   { 
+   	Authorization        : accessToken
+   }
+  	``` 
 	Parameters
   	```
    { 

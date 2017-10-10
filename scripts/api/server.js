@@ -13,7 +13,10 @@ const connection = connections[envMode];
 const server = new Hapi.Server();
 
 server.connection(connection);
-
+// bring your own validation function
+var validate = function (decoded, request, callback) {
+    callback(null,true);
+};
 // --- Services
 server.register(
     {

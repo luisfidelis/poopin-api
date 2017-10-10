@@ -3,16 +3,28 @@ var Avaliation = require('../model/avaliation.js').Avaliation;
 var Toilet     = require('../model/toilet.js').Toilet;
 var User       = require('../model/user.js').User;
 var ObjectId   = require('mongoose').Types.ObjectId;
+var mongoose   = require('mongoose');
+var dbConfig   = require('../../config/db.js');
+mongoose.Promise = require('bluebird');
 
-function save(avaliation) {
+var db = mongoose.createConnection('mongodb://'+dbConfig.username+':'+dbConfig.password+'@' + dbConfig.host +':'+dbConfig.port+'/' + dbConfig.db, { useMongoClient: true });
+db.on('error', console.error.bind(console, 'connection error'));
+db.once('open', function callback() {
+    console.log("Connection with database succeeded.");
+});
 
-    var toiletId        = avaliation.toiletId;
+function save(avaliationToSave) {
+
+    var toiletId        = avaliationToSave.toiletId;
 	var toiletIdObj     = new ObjectId(toiletId);
-    avaliation.toiletId = toiletIdObj;
+    avaliationToSave.toiletId = toiletIdObj;
    
-    var userId        = avaliation.userId;
+    var userId        = avaliationToSave.userId;
     var userIdObj     = new ObjectId(userId);             
-    avaliation.userId = userIdObj;
+    avaliationToSave.userId = userIdObj;
+
+    var _id           = new ObjectId();
+    avaliationToSave._id    = _id;
 
     var response = {
 		"error" : false,
@@ -21,16 +33,18 @@ function save(avaliation) {
 	};
 
     return new Promise(function(resolve,reject){
-        let avaliation = new Avaliation(avaliation);
-        avaliation.save(function(err, result){
+        var avaliation = new Avaliation(avaliationToSave);
+        avaliation.save(function(err){
            	if(err){
+                console.log(err);
+                return;
         		response.error   = true;
                 response.message = "Falha ao salvar a avaliação da sua cagada";
                 resolve(response);
-        	}
+            }
             response.message = "A avaliação da sua cagada foi salva com sucesso";
-        	resolve(response);
-        });
+            resolve(response);
+        });    
     });
 };
 
@@ -64,26 +78,8 @@ function getByUser(userId){
                 response.message = "Nenhuma cagada encontrada.";
                 resolve(response);
             }else{
-                // var toilet = result.toiletId;
-                // if(toilet){
-                //     toilet.populate({
-                //         'path'   : 'userId',
-                //         'select' : 'name nickname'  
-                //     }).
-                //     exec(function(err,toilet){
-                //         if(err){
-                //             response.error   = true;
-                //             response.message = "Erro ao mapear cagadas.";
-                //             resolve(response);
-                //         }
-                //         result.toiletId = toilet;
-                //         response.data = result;
-                //         resolve(response); 
-                //     })
-                // }else{
-                    response.data = result;
-                    resolve(response);   
-                //}
+                response.data = result;
+                resolve(response);   
             }            
         });     
     });

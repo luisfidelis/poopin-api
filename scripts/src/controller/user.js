@@ -18,16 +18,23 @@ const save = (request,reply) => {
 
 const login = (request, reply) => {
     const { email, password } = request.payload.params;
-    
+
     const options = {
     	email,
     	password
     };
 
-    UserService.login(options).then(response => reply.response(response));
+  UserService.login(options).then(response => reply.response(response));
 };
+  
+function checkRoute(request, reply){
+	console.log(request);
+	console.log(reply);
+}
+
 
 module.exports = {
 	save,
-	login
+	login,
+  checkRoute
 };
