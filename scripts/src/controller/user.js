@@ -1,50 +1,40 @@
-'use strict';
+const UserService = require('../service/user.js');
 
-var UserService = require('../service/user.js');
+const save = (request,reply) => {
+	const mongo  = request.mongo;
+	const { id, name, nickname, birthDate, email, password } = request.payload.params;
 
-function save(request,reply) {
-	var mongo  = request.mongo;
-	var params = request.payload;
-
-	var user  = {
-		_id       : params.id,
-		name      : params.name,
-		nickname  : params.nickname,
-		birthDate : params.birthDate,
-		email     : params.email,
-		password  : params.password
+	const user  = {
+		_id: id,
+		name,
+		nickname,
+		birthDate,
+		email,
+		password
 	};
 
-	UserService.save(user).then(function(response){
-		return reply.response(response);	
-	});
-
+	UserService.save(user).then(response => reply.response(response));	
 };
+
+const login = (request, reply) => {
+    const { email, password } = request.payload.params;
+
+    const options = {
+    	email,
+    	password
+    };
+
+  UserService.login(options).then(response => reply.response(response));
+};
+  
 function checkRoute(request, reply){
 	console.log(request);
 	console.log(reply);
 }
-function login(request, reply){
-    var params = request.payload;
-    
-    var options = {
-    	email    : params.email,
-    	password : params.password
 
-    };
 
-    UserService.login(options).then(function(response){
-    	return reply.response(response);	
-    });
-
+module.exports = {
+	save,
+	login,
+  checkRoute
 };
-
-
-var exports = module.exports = {
-	save  : save,
-	login : login,
-	checkRoute : checkRoute
-};
-
-
-
