@@ -1,7 +1,7 @@
 module.exports =  {
-    host: 'ds127443.mlab.com',
-    port: 27443,
-    db: 'poopin',
-    username: 'poopin',
-	password: 'l3projects'
+    host: process.env.DBHOST,
+    port: process.env.DBPORT,
+    db: process.env.DBNAME,
+    username: process.env.DBUSER,
+	password: process.env.DBPASS
 }
