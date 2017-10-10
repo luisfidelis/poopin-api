@@ -1,14 +1,13 @@
-var UserController = require('../../src/controller/user.js');
-
-var group = '/user';
+const UserController = require('../../src/controller/user.js');
+const group = '/user';
 
 module.exports = [
 	{
-		path    : group+'/save',
+		path    : `${group}/save`,
 		method  : 'POST',
 		handler :  UserController.save		
 	},{
-		path    : group+'/login',
+		path    : `${group}/login`,
 		method  : 'POST',
 		handler : UserController.login	
 	}

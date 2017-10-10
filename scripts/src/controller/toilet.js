@@ -1,44 +1,32 @@
-'use strict';
+const ToiletService = require('../service/toilet.js');
 
-var ToiletService = require('../service/toilet.js');
-
-function save(request,reply) {
-	var mongo  = request.mongo;	
-	var params = request.payload;
+const save = (request, reply) => {
+	const mongo  = request.mongo;	
+	const { description, title, address, city, state, country, lat, lng, userId, id} = request.payload.params;
 	
-    var toilet = {
-        description : params.description,
-        title       : params.title,
-        address     : params.address,
-        city        : params.city,
-        state       : params.state,
-        country     : params.country,
-        lat         : params.lat,
-        lng         : params.lng,
-        userId      : params.userId,
-        _id         : params.id
+    const toilet = {
+        _id: id,
+        description,
+        title,
+        address,
+        city,
+        state,
+        country,
+        lat,
+        lng,
+        userId
     };
 
-    var avaliations = params.avaliations;
+    const avaliations = params.avaliations;
 
-    ToiletService.save(toilet,avaliations,mongo).then(function(response){
-        return reply.response(response);
-    });    
-
+    ToiletService.save(toilet, avaliations, mongo).then(response => reply.response(response));    
 };
 
-function getAll(request, reply){ 
-    
-    ToiletService.getAll().then(function(response){
-        return reply.response(response);                
-    });
-
+const getAll = (request, reply) => { 
+    ToiletService.getAll().then(response => reply.response(response));
 };
 
-var exports = module.exports = {
-	save   : save,
-	getAll : getAll
+module.exports = {
+	save,
+	getAll
 };
-
-
-

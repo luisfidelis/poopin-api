@@ -1,37 +1,27 @@
-'use strict';
+const AvaliationService = require('../service/avaliation.js');
 
-var AvaliationService = require('../service/avaliation.js');
-
-function save(request,reply) {
-	var params = request.payload;
+const save = (request,reply) => {
+	const { userId, toiletId, stars, observation } = request.payload.params;
 	
-    var avaliation = {
-        userId      : params.userId,
-        toiletId    : params.toiletId,
-        stars       : params.stars,
-        observation : params.observation
+    const avaliation = {
+        userId,
+        toiletId,
+        stars,
+        observation
     };
 
-    AvaliationService.save(avaliation).then(function(response){
-        return reply.response(response);
-    });    
-
+    AvaliationService.save(avaliation).then(response => reply.response(response));    
 };
 
-function getByUser(request, reply){ 
-    var params = request.params;
+const getByUser = (request, reply) => { 
+    const { userId } = request.params;
     
-    var userId = params.userId;
-    
-    AvaliationService.getByUser(userId).then(function(response){
-        return reply.response(response);                
-    });
-
+    AvaliationService.getByUser(userId).then(response => reply.response(response));
 };
 
-var exports = module.exports = {
-	save      : save,
-	getByUser : getByUser
+module.exports = {
+	save,
+	getByUser
 };
 
 
